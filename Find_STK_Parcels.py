@@ -43,8 +43,6 @@ def extract_apns(file: str) -> list:
     for token in tokens:
         apn = re.search(apn_format, token)
         apn_sub = re.search(apn_subformat, token)
-        # if apn_sub:
-        #     print('SUBS', apn_sub.group())
         if range:
             if apn:
                 apns[-1] = apns[-1] + "-" + apn.group().replace('-', "")
@@ -53,11 +51,8 @@ def extract_apns(file: str) -> list:
             apns.append(apn.group().replace('-', ""))
         elif re.search(range_format, token.lower()):
             range = True
-        # elif apn_sub:
-        #     apns.append(apn_sub.group().replace('-', "$"))
     if apns == []:
         apns = ["-1"]
-        # print(tokens)
     return apns
 
 
@@ -84,12 +79,6 @@ def select_by_attr(features: list) -> None:
                             os.rename(row['file_path'], new_path)
                             found = True
                             break
-                # elif "$" in val:
-                #     val = str(val).replace("$", "")
-                #     if [str(num).startswith(val) for num in features]:
-                #         new_path = os.path.join(out_directory, row['file_name'])
-                #         os.rename(row['file_path'], new_path)
-                #         found = True
                 else:
                     if int(val) in features:
                         new_path = os.path.join(out_directory, row['file_name'])
@@ -117,4 +106,5 @@ if __name__ == "__main__":
     cursor = arcpy.SearchCursor(layer)
     features = {row.getValue(attribute) for row in cursor}
     select_by_attr(features)
+
     print("Finished")
